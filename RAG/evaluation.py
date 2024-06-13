@@ -1,22 +1,7 @@
-import openai
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
-import difflib
-from langchain_community.llms import Ollama
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_community.document_loaders import WebBaseLoader
-from langchain_community.embeddings import OllamaEmbeddings
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.vectorstores import FAISS
-from langchain.chains.combine_documents import create_stuff_documents_chain
-from langchain_core.documents import Document
-from langchain.chains import create_retrieval_chain
-from langchain_openai.chat_models import ChatOpenAI
-import openai
-from langchain_openai import OpenAIEmbeddings
-import fitz
-from RAG import *
 import numpy as np
+from RAG import *
 
 
 def calculate_brevity(original_answer, query_answer):
@@ -41,8 +26,6 @@ def calculate_sim(original_embedding, query_answer):
     similarity = cosine_similarity(
         np.array(original_embedding).reshape(1, -1),  np.array(query_embedding).reshape(1, -1))
     return similarity[0][0]
-
-# Function to evaluate LLM and add new columns to the DataFrame
 
 
 def mostly_identical(chunkSize, llm_texts, text2_index):
@@ -95,7 +78,7 @@ def evaluate_llm(chunkSize, chain, df):
         print("")
         print((calculate_sim(idk_embedding, simple_answer["answer"]) > .7))
 
-        if ((calculate_sim(idk_embedding, simple_answer["answer"]) > .7) ^ (style == '3')):
+        if ((calculate_sim(idk_embedding, comp_answer["answer"]) > .7) ^ (style == '3')):
             limitation_score = 0
         else:
             limitation_score = 1
@@ -110,10 +93,6 @@ def evaluate_llm(chunkSize, chain, df):
         robustness_scores.append(robustness_score)
         limitation_scores.append(limitation_score)
         context_matching_scores.append(context_matching_score)
-        # Add other calculations for Robustness, Knowledge Bounding, Context Matching as needed
-        # For example:
-        # robustness_score = calculate_robustness(row['Answer'], query_answer)
-        # knowledge_bounding_score = calculate_knowledge_bounding(row['Answer'], query_answer)
 
     # Add the calculated scores to the DataFrame
     df['LLM Answers'] = llm_answers

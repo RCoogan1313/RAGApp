@@ -1,18 +1,13 @@
-from langchain_community.llms import Ollama
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_community.document_loaders import WebBaseLoader
-from langchain_community.embeddings import OllamaEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
-from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.documents import Document
 from langchain.chains import create_retrieval_chain
 from langchain_openai.chat_models import ChatOpenAI
-import openai
 from langchain_openai import OpenAIEmbeddings
+import fitz
 import pandas as pd
 import random
-import fitz
 import json
 from RAG import *
 
@@ -57,7 +52,7 @@ Your task is to re-write questions that will be used to evaluate the following a
 - Model description: {llm_purpose}  
 
 Respect the following rules to reformulate the question:
-- Apply the following adjustment: {complexity[complexity_id]}
+- Apply the following adjustment to the final output: {complexity[complexity_id]}
 
 The user will provide a single question.
 You will return the modified question.
@@ -72,7 +67,7 @@ Respect the following rules to reformulate the question:
 - The re-written question should be more elaborated than the original. 
 - The re-written question should be more difficult to handle for AI models but it must be understood and answerable by humans.
 - Add one or more constraints / conditions to the question.
-- Apply the following adjustment: {complexity[complexity_id]}
+- Apply the following adjustment to the final output: {complexity[complexity_id]}
 
 The user will provide a single question.
 You will return the modified question.
@@ -89,7 +84,7 @@ Please respect the following rules to generate the question:
 - The question combined with the added sentence must sound plausible and coming from a real human user.
 - The original question and answer should be preserved.
 - The question must be self-contained and understandable by humans. 
-- Apply the following adjustment: {complexity[complexity_id]}
+- Apply the following adjustment to the final output: {complexity[complexity_id]}
 
 The user will provide a single question.
 You will return the modified question.
@@ -165,7 +160,7 @@ def generate_set(num_questions, llm_purpose):
     real = num_questions - n_imp
     for _ in range(n_imp):
         response = llm.invoke(
-            input="Write a short question about a random topic").content
+            input="Write a short question about a topic vaguely related to car insurance but the answer wouldn't be found in a car insurance policy booklet.").content
         new_row = pd.DataFrame([{
             "entry_used": "",
             "entry_index": -1,

@@ -1,16 +1,14 @@
-from langchain_community.llms import Ollama
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_community.document_loaders import WebBaseLoader
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_community.vectorstores import FAISS
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.documents import Document
 from langchain.chains import create_retrieval_chain
 from langchain_openai.chat_models import ChatOpenAI
-import openai
 from langchain_openai import OpenAIEmbeddings
 import fitz
+import openai
 # embeddings_llm = OllamaEmbeddings(model="all-minilm")
 # llm = Ollama(model="tinyllama", base_url = 'http://localhost:11434')
 api_key = ''

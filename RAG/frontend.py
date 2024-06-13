@@ -11,8 +11,6 @@ from evaluation import *
 csv_file = 'settings.csv'
 settings = pd.read_csv(csv_file)
 
-# Access the value of var1 (assuming it's in the first row and first column)
-
 
 # Initialize session state for chat and table
 if "messages" not in st.session_state:
@@ -41,6 +39,7 @@ retrieve = setChain(3000, """
 
   Question: {input}
   """)
+
 # Function to add a new row to the table
 
 
@@ -65,11 +64,8 @@ def add_row(prompt, chunk):
 
     means_list = column_means.tolist()
 
-    # Create the final list with "a" and "b" as the first two entries, followed by prompt, chunk, and column sums
     final_list = [prompt, chunk] + means_list
     st.session_state.table.append(final_list)
-
-# Function to handle sending a message
 
 
 def regen(num_questions, purpose):
@@ -115,7 +111,6 @@ for i, msg in enumerate(st.session_state.messages):
     else:
         message(msg["content"], key=f"bot_{i}")
 
-# Table Interface
 
 # Top section with two columns
 col1, col2 = st.columns(2)
@@ -144,8 +139,6 @@ st.subheader("Summary Statistics")
 # Create a DataFrame from the table data (excluding the header)
 df = pd.DataFrame(
     st.session_state.table[1:], columns=st.session_state.table[0])
-
-# Ensure consistent data types for all columns
 
 
 # Display the table with headers and numbered rows

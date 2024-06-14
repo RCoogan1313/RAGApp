@@ -9,7 +9,7 @@ To run this web app locally, follow these steps:
 
 3. Install the required dependencies using pip
 
-4. Run the Streamlit app: streamlit run app.py
+4. Run the Streamlit app: streamlit run frontend.py
 
 5. Open your browser and visit `http://localhost:8501` to access the web app.
 
